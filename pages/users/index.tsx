@@ -31,6 +31,7 @@ export const getStaticProps: GetStaticProps = async () => {
   // Don't forget to include the respective types for any props passed into
   // the component.
   const items: User[] = sampleUserData
+  
   return { props: { items } }
 }
 

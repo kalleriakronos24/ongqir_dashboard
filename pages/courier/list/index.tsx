@@ -14,7 +14,6 @@ type Courier = {
     status: boolean;
   };
 };
-type Props = {};
 
 const CourierList = ({
   courier,

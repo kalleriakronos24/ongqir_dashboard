@@ -74,7 +74,7 @@ const CourierDeposits = ({
 
   let [wallet, setWallet] = useState<string>("");
 
-  const submit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let body: BodyPost = {

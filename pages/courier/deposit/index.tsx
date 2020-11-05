@@ -52,7 +52,8 @@ const CourierDeposits = ({
   let [rp, setRp] = useState<string>("");
 
   const formatRupiah = (angka: string, prefix: string): string => {
-    setRp(angka.slice(4).replaceAll(".", ""));
+
+    setRp(angka.slice(4).replace(/\./g, ""));
 
     var number_string = angka.replace(/[^,\d]/g, '').toString(),
       split = number_string.split(','),

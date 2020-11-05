@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../../components/Layout";
 import Modal from "../../../components/Modals";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { InferGetStaticPropsType } from "next";
 
 type CourierInfo = {
   fullname: string;

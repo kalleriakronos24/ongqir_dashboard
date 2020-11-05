@@ -8,7 +8,7 @@ import ListDetail from '../../components/ListDetail'
 type Props = {
   item?: User
   errors?: string
-}
+};
 
 const StaticPropsDetail = ({ item, errors }: Props) => {
   if (errors) {
@@ -25,7 +25,7 @@ const StaticPropsDetail = ({ item, errors }: Props) => {
     <Layout
       title={`${
         item ? item.name : 'User Detail'
-      } | Next.js + TypeScript Example`}
+        } | Next.js + TypeScript Example`}
     >
       {item && <ListDetail item={item} />}
     </Layout>

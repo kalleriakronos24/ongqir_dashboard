@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FormHTMLAttributes, FormEventHandler } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../../components/Layout";
 import Modal from "../../../components/Modals";
 import { InferGetStaticPropsType } from "next";

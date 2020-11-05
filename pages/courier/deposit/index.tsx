@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FormHTMLAttributes, FormEventHandler } from "react";
 import Layout from "../../../components/Layout";
 import Modal from "../../../components/Modals";
 import { InferGetStaticPropsType } from "next";
@@ -74,7 +74,7 @@ const CourierDeposits = ({
 
   let [wallet, setWallet] = useState<string>("");
 
-  const submit = async (e) => {
+  const submit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     let body: BodyPost = {

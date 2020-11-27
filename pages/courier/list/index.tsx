@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "../../../components/Layout";
 import { InferGetStaticPropsType } from "next";
+import { SERVER_URL } from "../../../utils/constants";
 
 type Courier = {
   fullname: string;
@@ -9,6 +10,7 @@ type Courier = {
   active_order: string;
   email: string;
   foto_diri: string;
+  foto_stnk: string;
   courier_info: {
     balance: number;
     status: boolean;
@@ -34,10 +36,10 @@ const CourierList = ({
                       <tr>
                         <th>Nama</th>
                         <th>Email</th>
-                        <th>Alamat</th>
                         <th>Order Aktif</th>
                         <th>Foto Diri</th>
                         <th>Foto KTP</th>
+                        <th>Foto STNK</th>
                         <th>Busy</th>
                         <th>Wallet</th>
                       </tr>
@@ -48,10 +50,31 @@ const CourierList = ({
                           <tr key={i}>
                             <td>{v.fullname}</td>
                             <td>{v.email}</td>
-                            <td>{v.alamat}</td>
                             <td>{v.active_order ? "ada" : "tidak ada"}</td>
-                            <td>Foto Diri</td>
-                            <td>Foto KTP</td>
+                            <td className="text-center">
+                              <button
+                                onClick={() => (window.location.href = v.foto_diri)}
+                                className="action-view-button"
+                              >
+                                Lihat
+                                </button>
+                            </td>
+                            <td className="text-center">
+                              <button
+                                onClick={() => (window.location.href = v.foto_ktp)}
+                                className="action-view-button"
+                              >
+                                Lihat
+                                </button>
+                            </td>
+                            <td className="text-center">
+                              <button
+                                onClick={() => (window.location.href = v.foto_stnk)}
+                                className="action-view-button"
+                              >
+                                Lihat
+                                </button>
+                            </td>
                             <td>{v.courier_info.status ? "iya" : "tidak"}</td>
                             <td>Rp.{v.courier_info.balance},-</td>
                           </tr>
@@ -70,7 +93,7 @@ const CourierList = ({
 };
 
 export const getStaticProps = async () => {
-  const res = await fetch("http://192.168.43.178:8000/user/type/courier", {
+  const res = await fetch(`${SERVER_URL}/user/type/courier`, {
     method: "GET",
   });
   const courier: Courier[] = await res.json();

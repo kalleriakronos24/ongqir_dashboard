@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../../components/Layout";
 import Modal from "../../../components/Modals";
 import { InferGetStaticPropsType } from "next";
+import { SERVER_URL } from '../../../utils/constants';
 
 type CourierInfo = {
   fullname: string;
@@ -12,6 +13,12 @@ type CourierInfo = {
   email: string;
 };
 
+type Bank = {
+  nama_bank: string | undefined,
+  atas_nama_pemilik: string | undefined,
+  no_rek: string | undefined
+}
+
 type Deposit = {
   _id: string;
   date: string;
@@ -20,6 +27,8 @@ type Deposit = {
   status: boolean;
   reference_id: number;
   amount: number;
+  ke: Bank,
+  rejected: boolean
 };
 
 type ModalData = {
@@ -37,6 +46,7 @@ interface BodyPost {
 const CourierDeposits = ({
   deposits,
   depositDone,
+  depostiRejected
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   let [data, setData] = useState<ModalData>({
     name: "",
@@ -46,6 +56,8 @@ const CourierDeposits = ({
     ref_id: 0,
   });
 
+
+  // const router = useRouter();
 
 
 
@@ -84,7 +96,7 @@ const CourierDeposits = ({
 
     console.log(body);
 
-    await fetch("http://192.168.43.178:8000/accept/request/wallet", {
+    await fetch(`${SERVER_URL}/accept/request/wallet`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -103,8 +115,36 @@ const CourierDeposits = ({
         console.log(err);
       });
   };
+  const rejectRequest = async (id: string) => {
+    console.log('is this pressed ?');
+    let body = {
+      id: id
+    };
+    
+    return await fetch(`${SERVER_URL}/reject-request-add-wallet`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(async res => {
+        if (res.msg === 'success') {
+          window.location.reload();
+        }
+        return;
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
 
   useEffect(() => {
+
     return () => {
       console.log("cleaned up");
     };
@@ -136,6 +176,7 @@ const CourierDeposits = ({
                               <th>Kode Unik</th>
                               <th>Tanggal</th>
                               <th>Bukti Transfer</th>
+                              <th>Di kirim ke (Kami)</th>
                               <th className="text-center">Action</th>
                             </>
                           )}
@@ -162,6 +203,7 @@ const CourierDeposits = ({
                                 <td>{v.reference_id}</td>
                                 <td>{v.date}</td>
                                 <td>{v.bukti_transfer ? "ada" : "kosong"}</td>
+                                <td>{v.ke.nama_bank} {v.ke.no_rek} | {v.ke.atas_nama_pemilik}</td>
 
                                 <td className="text-center">
                                   <button
@@ -180,7 +222,9 @@ const CourierDeposits = ({
                                   >
                                     View
                                 </button>
-                                  <button className="action-reject-button">
+                                  <button type="submit"
+                                    onClick={() => rejectRequest(v._id)}
+                                    className="action-reject-button">
                                     Reject
                                 </button>
                                 </td>
@@ -194,6 +238,9 @@ const CourierDeposits = ({
               </div>
             </div>
           </div>
+
+
+          {/* Accepted Deposit */}
           <div className="col-md-12">
             <div className="card  card-plain">
               <div className="card-header">
@@ -215,6 +262,7 @@ const CourierDeposits = ({
                               <th>Wallet (Rp.)</th>
                               <th>Status</th>
                               <th>Ref ID</th>
+                              <th>Di kirim ke (Kami)</th>
                               <th>Bukti Transfer</th>
                             </>
                           )}
@@ -239,6 +287,75 @@ const CourierDeposits = ({
                                     : "menunggu di verifikasi"}
                                 </td>
                                 <td>{v.reference_id}</td>
+                                <td>{v.ke.nama_bank} {v.ke.no_rek} | {v.ke.atas_nama_pemilik}</td>
+                                <td className="text-center">
+                                  <button
+                                    onClick={() => (window.location.href = v.bukti_transfer)}
+                                    className="action-view-button"
+                                  >
+                                    View
+                                </button>
+                                </td>
+                              </tr>
+                            );
+                          })
+                        )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          {/* Rejected Deposit */}
+          <div className="col-md-12">
+            <div className="card  card-plain">
+              <div className="card-header">
+                <h4 className="card-title">
+                  List deposit yang di tolak
+                </h4>
+                <p className="category">a</p>
+              </div>
+              <div className="card-body">
+                <div className="table-responsive">
+                  <table className="table tablesorter " id="">
+                    <thead className=" text-primary">
+                      <tr>
+                        {depostiRejected.length === 0 ? (
+                          <th className="text-center">No Data Available</th>
+                        ) : (
+                            <>
+                              <th>Nama</th>
+                              <th>Wallet (Rp.)</th>
+                              <th>Status</th>
+                              <th>Ref ID</th>
+                              <th>Bukti Transfer</th>
+                              <th>Di kirim ke (Kami)</th>
+                            </>
+                          )}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {depostiRejected.length === 0 ? (
+                        <tr>
+                          <td className="text-center">
+                            -tidak ada data request wallet yg di tolak-
+                          </td>
+                        </tr>
+                      ) : (
+                          depostiRejected.map((v, i) => {
+                            return (
+                              <tr key={i}>
+                                <td>{v.courier_id.fullname}</td>
+                                <td>{v.amount}</td>
+                                <td>
+                                  {v.rejected
+                                    ? "Deposit Ditolak"
+                                    : "?"}
+                                </td>
+                                <td>{v.reference_id}</td>
+                                <td>{v.ke.nama_bank} {v.ke.no_rek} | {v.ke.atas_nama_pemilik}</td>
                                 <td className="text-center">
                                   <button
                                     onClick={() => (window.location.href = v.bukti_transfer)}
@@ -311,29 +428,40 @@ const CourierDeposits = ({
 };
 
 export const getStaticProps = async () => {
+
   const res = await fetch(
-    `http://192.168.43.178:8000/all/request/topup/wallet`,
+    `${SERVER_URL}/all/request/topup/wallet`,
     {
       method: "GET",
     }
   );
   const res1 = await fetch(
-    `http://192.168.43.178:8000/all/done/request/topup/wallet`,
+    `${SERVER_URL}/all/done/request/topup/wallet`,
     {
       method: "GET",
     }
   );
 
+  const res2 = await fetch(`${SERVER_URL}/get/all/rejected/request`,
+    {
+      method: "GET"
+    })
+
+
+
   const deposits: Deposit[] = await res.json();
   const depositDone: Deposit[] = await res1.json();
+  const depostiRejected: Deposit[] = await res2.json();
 
   return {
     props: {
       deposits,
       depositDone,
+      depostiRejected
     },
     revalidate: 1
   };
 };
+// export const getServerSideProps: GetServerSideProps = requirePageAuth();
 
 export default CourierDeposits;

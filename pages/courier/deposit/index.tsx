@@ -387,13 +387,14 @@ const CourierDeposits = ({
             <div className="bukti-tf-wrapper">
               <span className="bukti-tf-text">Foto Bukti Transfer</span>
               <span>Note* klik gambar untuk memperbesar</span>
+              <span>*Jika gambar tidak muncul, cukup klik kotak ini.</span>
               <img
                 onClick={() => (window.location.href = data.bukti_transfer)}
                 src={data.bukti_transfer}
               />
             </div>
             <div className="sender-info">
-              <span className="sender-info-text">From : {data.bukti_transfer}</span>
+              <span className="sender-info-text">From : {data.name}</span>
               <span className="sender-info-text">
                 Status :{" "}
                 {data.status ? "sudah di verifikasi" : "belum di verifikasi"}

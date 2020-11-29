@@ -393,7 +393,7 @@ const CourierDeposits = ({
               />
             </div>
             <div className="sender-info">
-              <span className="sender-info-text">From : {data.name}</span>
+              <span className="sender-info-text">From : {data.bukti_transfer}</span>
               <span className="sender-info-text">
                 Status :{" "}
                 {data.status ? "sudah di verifikasi" : "belum di verifikasi"}

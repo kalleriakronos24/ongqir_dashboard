@@ -98,6 +98,8 @@ export const getStaticProps = async () => {
   });
   const courier: Courier[] = await res.json();
 
+  console.log('courier data ::: ', courier);
+  
   return {
     props: {
       courier,

@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../../../components/Layout";
-import { InferGetStaticPropsType } from "next";
+import { InferGetServerSidePropsType } from "next";
 import { SERVER_URL } from "../../../utils/constants";
 
 type Courier = {
@@ -20,7 +20,7 @@ type Courier = {
 
 const CourierList = ({
   courier,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout title="Courier Lists">
       <div className="content">
@@ -95,7 +95,7 @@ const CourierList = ({
   );
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const res = await fetch(`${SERVER_URL}/user/type/courier`, {
     method: "GET",
   });

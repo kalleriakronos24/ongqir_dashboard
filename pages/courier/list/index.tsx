@@ -15,6 +15,7 @@ type Courier = {
     balance: number;
     status: boolean;
   };
+  verified: boolean;
 };
 
 const CourierList = ({
@@ -42,6 +43,7 @@ const CourierList = ({
                         <th>Foto STNK</th>
                         <th>Busy</th>
                         <th>Wallet</th>
+                        <th>Verified</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -77,6 +79,7 @@ const CourierList = ({
                             </td>
                             <td>{v.courier_info.status ? "iya" : "tidak"}</td>
                             <td>Rp.{v.courier_info.balance},-</td>
+                            <td>{v.verified ? "Iya" : "Tidak"}</td>
                           </tr>
                         );
                       })}
@@ -99,7 +102,7 @@ export const getStaticProps = async () => {
   const courier: Courier[] = await res.json();
 
   console.log('courier data ::: ', courier);
-  
+
   return {
     props: {
       courier,

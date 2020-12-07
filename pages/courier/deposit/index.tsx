@@ -459,8 +459,7 @@ export const getServerSideProps = async () => {
       deposits,
       depositDone,
       depostiRejected
-    },
-    revalidate: 1
+    }
   };
 };
 // export const getServerSideProps: GetServerSideProps = requirePageAuth();

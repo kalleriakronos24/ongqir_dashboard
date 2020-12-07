@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../../components/Layout";
 import Modal from "../../../components/Modals";
-import { InferGetStaticPropsType } from "next";
+import { InferGetServerSidePropsType } from "next";
 import { SERVER_URL } from '../../../utils/constants';
 
 type CourierInfo = {
@@ -47,7 +47,7 @@ const CourierDeposits = ({
   deposits,
   depositDone,
   depostiRejected
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   let [data, setData] = useState<ModalData>({
     name: "",
     id: "",
@@ -134,7 +134,7 @@ const CourierDeposits = ({
       .then(async res => {
         if (res.msg === 'success') {
           window.location.reload();
-        }
+        };
         return;
       })
       .catch(err => {
@@ -428,7 +428,7 @@ const CourierDeposits = ({
   );
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
 
   const res = await fetch(
     `${SERVER_URL}/all/request/topup/wallet`,

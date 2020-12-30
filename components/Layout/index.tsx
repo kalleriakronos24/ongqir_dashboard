@@ -45,7 +45,6 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
       <script src="/js2/plugins/bootstrap-notify.js"></script>
       <script src="/js2/black-dashboard.min.js?v=1.0.0"></script>
       <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-      <script data-ad-client="ca-pub-2513203373283970" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       
     </Head>
     <div className="wrapper">
